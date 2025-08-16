@@ -12,14 +12,26 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BinFlowDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add CORS for Blazor WASM
+// Add CORS for Blazor WASM - more permissive configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorWasm", policy =>
     {
-        policy.WithOrigins("http://localhost:5108", "https://localhost:5109") // Blazor WASM URLs
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        if (builder.Environment.IsDevelopment())
+        {
+            // Development - allow localhost
+            policy.WithOrigins("http://localhost:5108", "https://localhost:5109")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+        else
+        {
+            // Production - allow Azure Static Web Apps domain
+            policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        }
     });
 });
 
