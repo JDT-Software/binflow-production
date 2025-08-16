@@ -44,19 +44,14 @@ else
     Console.WriteLine("Warning: No database connection found. API will use mock data only.");
 }
 
-// Add CORS for Blazor WASM - simplified and more permissive
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowBlazorWasm", policy =>
+    options.AddPolicy("AllowAzureStaticApp", policy =>
     {
-        policy.WithOrigins(
-                "https://lively-field-072633610.2.azurestaticapps.net",
-                "http://localhost:5108",
-                "https://localhost:7071"
-              )
+        policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net") // your frontend
               .AllowAnyHeader()
               .AllowAnyMethod();
-              // Removed .AllowCredentials() since we're only sending JSON body
     });
 });
 
@@ -86,7 +81,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // 🚀 Use CORS here (before auth, before controllers)
-app.UseCors("AllowBlazorWasm");
+app.UseCors("AllowAzureStaticApp");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
