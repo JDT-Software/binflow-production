@@ -1,0 +1,219 @@
+/* Bin Flow Global Styles */
+:root {
+    --dominant-color: #D8C99B;
+    --secondary-color: #273E47;
+    --accent-color: #D8973C;
+}
+
+body {
+    background-color: var(--dominant-color);
+}
+
+.hero-gradient {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #1a2b33 100%);
+}
+
+.card-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.card-accent {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* Accent button that works with existing focus styles */
+.btn-accent {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+.btn-accent:hover {
+    background-color: #c07e2a;
+    border-color: #c07e2a;
+    color: white;
+}
+
+.btn-accent:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--accent-color);
+}
+
+/* Stats cards with gradients */
+.stats-card-1 {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #e6a54a 100%);
+}
+
+.stats-card-2 {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #334b56 100%);
+}
+
+.stats-card-3 {
+    background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+}
+
+.stats-card-4 {
+    background: linear-gradient(135deg, #2c5530 0%, #3e7b3e 100%);
+}
+
+/* Icon sizing */
+.icon-lg {
+    font-size: 2.5rem;
+}
+
+.icon-xl {
+    font-size: 4rem;
+}
+
+/* Progress bar customization */
+.progress-accent .progress-bar {
+    background-color: var(--accent-color);
+}
+
+/* Badge customizations */
+.badge-accent {
+    background-color: #0a2a43; /* navy */
+    color: #ffffff;
+}
+
+/* Table improvements for dark theme */
+.table-dark th {
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.table-dark td {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+    .icon-xl {
+        font-size: 3rem;
+    }
+    
+    .icon-lg {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+}
+
+/* ===============================
+   MOBILE NAVIGATION STYLES
+   =============================== */
+
+:root {
+    --dominant-color: #D8C99B;
+    --secondary-color: #273E47;
+    --accent-color: #D8973C;
+}
+
+/* Mobile Navigation Styles */
+.mobile-nav {
+    background-color: var(--secondary-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    padding: 0.25rem;
+    cursor: pointer;
+}
+
+.hamburger-btn:hover {
+    color: #fff;
+}
+
+.mobile-nav-dropdown {
+    background-color: var(--secondary-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0;
+}
+
+.mobile-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: 500;
+}
+
+.mobile-nav-item:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    text-decoration: none;
+}
+
+.mobile-nav-item i {
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+    width: 1.5rem;
+    text-align: center;
+}
+
+.mobile-nav-item span {
+    font-size: 1rem;
+}
+
+/* Page Layout */
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: var(--secondary-color);
+}
+
+.content {
+    flex: 1;
+    background-color: var(--dominant-color);
+    min-height: calc(100vh - 60px);
+}
+
+/* Desktop Sidebar */
+@media (min-width: 992px) {
+    .page {
+        flex-direction: row;
+    }
+    
+    .sidebar {
+        width: 260px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+    
+    .content {
+        min-height: 100vh;
+    }
+}
+
+/* Enhanced card hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Focus improvements for accessibility */
+.btn:focus,
+.card:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}

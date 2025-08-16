@@ -1,0 +1,85 @@
+    .top-row[b-gim3se9epn] {
+        background-color: var(--dominant-color);
+    }
+    /* Hourly Entry Specific Styles */
+    :root[b-gim3se9epn] {
+        --dominant-color: #D8C99B;
+        --secondary-color: #273E47;
+        --accent-color: #D8973C;
+    }
+    
+    .production-entry-page[b-gim3se9epn] {
+        background-color: var(--dominant-color);
+        min-height: 100vh;
+    }
+    
+    .hero-gradient[b-gim3se9epn] {
+        background: linear-gradient(135deg, var(--secondary-color) 0%, #1a2b33 100%);
+    }
+    
+    .card-secondary[b-gim3se9epn] {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+    
+    .card-accent[b-gim3se9epn] {
+        background-color: var(--accent-color);
+        color: white;
+    }
+    
+    .btn-accent[b-gim3se9epn] {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+    }
+    
+    .btn-accent:hover[b-gim3se9epn] {
+        background-color: #c07e2a;
+        border-color: #c07e2a;
+        color: white;
+    }
+    
+    .btn-accent:focus[b-gim3se9epn] {
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--accent-color);
+    }
+    
+    .badge-accent[b-gim3se9epn] {
+        background-color: #0a2a43; /* navy */
+        color: #ffffff;
+    }
+    
+    .icon-lg[b-gim3se9epn] {
+        font-size: 2.5rem;
+    }
+    
+    .icon-md[b-gim3se9epn] {
+        font-size: 1.5rem;
+    }
+    
+    .performance-card[b-gim3se9epn] {
+        transition: all 0.3s ease;
+    }
+    
+    .performance-card:hover[b-gim3se9epn] {
+        transform: translateY(-2px);
+    }
+    
+    .form-control:focus[b-gim3se9epn] {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(216, 151, 60, 0.25);
+    }
+    
+    .form-select:focus[b-gim3se9epn] {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(216, 151, 60, 0.25);
+    }
+    
+    @media (max-width: 768px) {
+        .icon-lg[b-gim3se9epn] {
+            font-size: 2rem;
+        }
+        
+        .icon-md[b-gim3se9epn] {
+            font-size: 1.2rem;
+        }
+    }

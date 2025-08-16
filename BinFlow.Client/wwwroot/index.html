@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinFlow</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="BinFlow.Client.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">
+        <!-- Modern Animated BinFlow Splash Screen -->
+        <div id="splash-screen" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 70%, #1a1a1a 0%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            z-index: 9999;
+            overflow: hidden;
+        ">
+            <!-- Animated Background Elements -->
+            <div class="bg-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+
+            <!-- Main Logo Container -->
+            <div class="logo-container" style="
+                position: relative;
+                margin-bottom: 40px;
+                animation: logoEntrance 1.5s ease-out;
+            ">
+                <!-- Logo Background Shapes -->
+                <div style="
+                    position: relative;
+                    width: 300px;
+                    height: 200px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                ">
+                    <!-- Top Left Shape -->
+                    <div class="logo-shape top-left" style="
+                        position: absolute;
+                        top: 20px;
+                        left: 20px;
+                        width: 80px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                        border-radius: 20px 20px 8px 20px;
+                        animation: shapeFloat 3s ease-in-out infinite;
+                        animation-delay: 0s;
+                    "></div>
+
+                    <!-- Top Right Shape -->
+                    <div class="logo-shape top-right" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        width: 120px;
+                        height: 90px;
+                        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+                        border-radius: 25px 25px 25px 8px;
+                        animation: shapeFloat 3s ease-in-out infinite;
+                        animation-delay: 0.5s;
+                    "></div>
+
+                    <!-- Bottom Left Shape -->
+                    <div class="logo-shape bottom-left" style="
+                        position: absolute;
+                        bottom: 10px;
+                        left: 10px;
+                        width: 110px;
+                        height: 85px;
+                        background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+                        border-radius: 8px 25px 25px 25px;
+                        animation: shapeFloat 3s ease-in-out infinite;
+                        animation-delay: 1s;
+                    "></div>
+
+                    <!-- Bottom Right Shape -->
+                    <div class="logo-shape bottom-right" style="
+                        position: absolute;
+                        bottom: 20px;
+                        right: 20px;
+                        width: 90px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                        border-radius: 25px 8px 25px 25px;
+                        animation: shapeFloat 3s ease-in-out infinite;
+                        animation-delay: 1.5s;
+                    "></div>
+
+                    <!-- BinFlow Text -->
+                    <div style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 10;
+                    ">
+                        <h1 class="logo-text" style="
+                            font-size: 3.5rem;
+                            font-weight: 900;
+                            margin: 0;
+                            letter-spacing: -2px;
+                            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+                            background: linear-gradient(135deg, #ffffff 0%, #10b981 50%, #ffffff 100%);
+                            background-size: 200% 200%;
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                            animation: textShimmer 2s ease-in-out infinite;
+                        ">
+                            <span style="color: #ffffff;">Bin</span><span style="color: #10b981;">Flow</span>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tagline -->
+            <p style="
+                font-size: 1.3rem;
+                margin: 0 0 50px 0;
+                opacity: 0.9;
+                text-align: center;
+                max-width: 600px;
+                line-height: 1.4;
+                animation: fadeInUp 1s ease-out 0.5s both;
+            ">No-sweat shift management</p>
+
+            <!-- Modern Loading Animation -->
+            <div class="loading-container" style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                animation: fadeInUp 1s ease-out 1s both;
+            ">
+                <!-- Circular Progress -->
+                <div class="circular-progress" style="
+                    position: relative;
+                    width: 60px;
+                    height: 60px;
+                ">
+                    <svg width="60" height="60" style="transform: rotate(-90deg);">
+                        <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
+                        <circle cx="30" cy="30" r="25" fill="none" stroke="#10b981" stroke-width="3" 
+                                stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"
+                                style="animation: circularProgress 2s ease-in-out infinite;"/>
+                    </svg>
+                </div>
+
+                <!-- Loading Text -->
+                <p style="
+                    font-size: 1rem;
+                    margin: 0;
+                    opacity: 0.8;
+                    animation: pulse 2s infinite;
+                ">Initializing workspace...</p>
+            </div>
+
+            <!-- Version/Copyright -->
+            <div style="
+                position: absolute;
+                bottom: 30px;
+                font-size: 0.9rem;
+                opacity: 0.6;
+                animation: fadeIn 1s ease-out 2s both;
+            ">
+                © 2025 SoftFlair
+            </div>
+        </div>
+
+        <!-- Fallback loading (hidden) -->
+        <div style="display: none;">
+            <svg class="loading-progress">
+                <circle r="40%" cx="50%" cy="50%" />
+                <circle r="40%" cx="50%" cy="50%" />
+            </svg>
+            <div class="loading-progress-text"></div>
+        </div>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script>
+        // Custom splash screen with extended display time
+        let minDisplayTime = 3000; // Show splash for at least 3 seconds
+        let startTime = Date.now();
+        
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                return defaultUri;
+            }
+        }).then(() => {
+            // Calculate how long splash has been showing
+            let elapsedTime = Date.now() - startTime;
+            let remainingTime = Math.max(0, minDisplayTime - elapsedTime);
+            
+            // Wait for minimum display time before hiding
+            setTimeout(() => {
+                const splashScreen = document.getElementById('splash-screen');
+                if (splashScreen) {
+                    splashScreen.style.transform = 'scale(0.95)';
+                    splashScreen.style.opacity = '0';
+                    splashScreen.style.transition = 'all 0.8s ease-out';
+                    setTimeout(() => {
+                        splashScreen.remove();
+                    }, 800);
+                }
+            }, remainingTime);
+        }).catch(error => {
+            console.error('Failed to start Blazor:', error);
+            const splashScreen = document.getElementById('splash-screen');
+            if (splashScreen) {
+                splashScreen.innerHTML = `
+                    <div style="text-align: center; animation: fadeInUp 0.5s ease-out;">
+                        <div style="
+                            width: 80px;
+                            height: 80px;
+                            background: linear-gradient(135deg, #ef4444, #dc2626);
+                            border-radius: 50%;
+                            margin: 0 auto 30px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 2rem;
+                        ">⚠</div>
+                        <h2 style="color: #ef4444; margin-bottom: 20px; font-weight: 600;">Connection Issue</h2>
+                        <p style="margin-bottom: 30px; opacity: 0.9;">We're having trouble loading BinFlow.</p>
+                        <button onclick="location.reload()" style="
+                            background: linear-gradient(135deg, #10b981, #059669);
+                            color: white;
+                            border: none;
+                            padding: 15px 30px;
+                            border-radius: 12px;
+                            font-size: 16px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: transform 0.2s ease;
+                            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+                        " onmouseover="this.style.transform='translateY(-2px)'" 
+                           onmouseout="this.style.transform='translateY(0)'">
+                            Retry Connection
+                        </button>
+                    </div>
+                `;
+            }
+        });
+    </script>
+
+    <style>
+        /* Background floating shapes */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            opacity: 0.03;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            top: -100px;
+            left: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            top: 50%;
+            right: -80px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            bottom: -100px;
+            left: 30%;
+            animation: float 22s ease-in-out infinite;
+        }
+
+        .shape-4 {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            top: 20%;
+            left: -90px;
+            animation: float 18s ease-in-out infinite reverse;
+        }
+
+        /* Animations */
+        @keyframes logoEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes shapeFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-10px) rotate(1deg);
+            }
+            66% {
+                transform: translateY(5px) rotate(-1deg);
+            }
+        }
+
+        @keyframes textShimmer {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes circularProgress {
+            0% {
+                stroke-dashoffset: 157;
+            }
+            50% {
+                stroke-dashoffset: 39;
+            }
+            100% {
+                stroke-dashoffset: 157;
+            }
+        }
+
+        /* Hide default Blazor loading */
+        .loading-progress {
+            display: none !important;
+        }
+        .loading-progress-text {
+            display: none !important;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 2.5rem !important;
+            }
+            .logo-container {
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</body>
+
+</html>
