@@ -9,17 +9,38 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Entity Framework with Railway database connection
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") 
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+var rawConnectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+Console.WriteLine($"Raw DATABASE_URL: {rawConnectionString ?? "NULL"}");
+
+var connectionString = rawConnectionString ?? builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine($"Initial connection string: {connectionString ?? "NULL"}");
 
 // Convert Railway PostgreSQL URL format to .NET connection string format
 if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgresql://"))
 {
-    var uri = new Uri(connectionString);
-    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.Trim('/')};Username={uri.UserInfo.Split(':')[0]};Password={uri.UserInfo.Split(':')[1]};SSL Mode=Require;Trust Server Certificate=true";
+    try
+    {
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo?.Split(':');
+        if (userInfo?.Length == 2)
+        {
+            connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.Trim('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
+            Console.WriteLine("Successfully converted PostgreSQL URL to .NET format");
+        }
+        else
+        {
+            Console.WriteLine("ERROR: Invalid user info in connection string");
+            connectionString = null;
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"ERROR parsing connection string: {ex.Message}");
+        connectionString = null;
+    }
 }
 
-Console.WriteLine($"Using connection string: {(!string.IsNullOrEmpty(connectionString) ? "Found and converted" : "Not found")}");
+Console.WriteLine($"Final connection string: {(!string.IsNullOrEmpty(connectionString) ? "Valid" : "Invalid/Empty")}");
 
 if (!string.IsNullOrEmpty(connectionString))
 {
