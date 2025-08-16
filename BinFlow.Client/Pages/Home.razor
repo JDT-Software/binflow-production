@@ -127,6 +127,11 @@
         </div>
     </div>
 
+    <!-- Debugging Info (temporary) -->
+    <div class="alert alert-info">
+        <strong>Debug Info:</strong> hasData = @hasData, totalBinsToday = @totalBinsToday, avgWeightToday = @avgWeightToday.ToString("F1")
+    </div>
+
     <!-- Quick Stats Overview -->
     @if (hasData)
     {
@@ -530,12 +535,41 @@
             }
             else
             {
-                // Fallback to any historical data to show something
+                // Fallback to shift reports data to show something
                 recentReports = await ProductionService.GetAllShiftReportsAsync();
-                hasData = recentReports.Any();
                 
-                if (!hasData)
+                if (recentReports.Any())
                 {
+                    hasData = true; // Show stats even with basic data
+                    
+                    // Calculate stats from shift reports directly
+                    var todaysShiftReports = recentReports.Where(r => r.Date.Date == DateTime.Today).ToList();
+                    
+                    if (todaysShiftReports.Any())
+                    {
+                        totalBinsToday = todaysShiftReports.Sum(r => r.TotalTipped);
+                        avgWeightToday = todaysShiftReports.Any() ? todaysShiftReports.Average(r => r.AverageWeight) : 0;
+                        totalDowntimeToday = todaysShiftReports.Sum(r => r.TotalDowntime);
+                        hourlyEntriesCount = todaysShiftReports.Count;
+                        
+                        // Calculate bins per hour based on shift data
+                        var totalShiftHours = todaysShiftReports.Count * 8; // Assuming 8 hour shifts
+                        efficiencyToday = totalShiftHours > 0 ? (double)totalBinsToday / totalShiftHours : 0;
+                    }
+                    else
+                    {
+                        // Use recent data if no today's data
+                        var recentData = recentReports.Take(5).ToList();
+                        totalBinsToday = recentData.Sum(r => r.TotalTipped);
+                        avgWeightToday = recentData.Any() ? recentData.Average(r => r.AverageWeight) : 0;
+                        totalDowntimeToday = recentData.Sum(r => r.TotalDowntime);
+                        hourlyEntriesCount = recentData.Count;
+                        efficiencyToday = recentData.Any() ? recentData.Average(r => r.TotalTipped) / 8.0 : 0;
+                    }
+                }
+                else
+                {
+                    hasData = false;
                     // Reset all stats
                     totalBinsToday = 0;
                     avgWeightToday = 0;
