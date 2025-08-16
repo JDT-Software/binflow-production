@@ -8,39 +8,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Entity Framework with Railway database connection
-var rawConnectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
-Console.WriteLine($"Raw DATABASE_URL: {rawConnectionString ?? "NULL"}");
+// Add Entity Framework with Railway database connection using individual variables
+var pgHost = Environment.GetEnvironmentVariable("PGHOST");
+var pgPort = Environment.GetEnvironmentVariable("PGPORT");
+var pgDatabase = Environment.GetEnvironmentVariable("PGDATABASE");
+var pgUser = Environment.GetEnvironmentVariable("PGUSER");
+var pgPassword = Environment.GetEnvironmentVariable("PGPASSWORD");
 
-var connectionString = rawConnectionString ?? builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"Initial connection string: {connectionString ?? "NULL"}");
+Console.WriteLine($"PGHOST: {pgHost ?? "NULL"}");
+Console.WriteLine($"PGPORT: {pgPort ?? "NULL"}");
+Console.WriteLine($"PGDATABASE: {pgDatabase ?? "NULL"}");
+Console.WriteLine($"PGUSER: {pgUser ?? "NULL"}");
+Console.WriteLine($"PGPASSWORD: {(string.IsNullOrEmpty(pgPassword) ? "NULL" : "***")}");
 
-// Convert Railway PostgreSQL URL format to .NET connection string format
-if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgresql://"))
+string connectionString = null;
+
+if (!string.IsNullOrEmpty(pgHost) && !string.IsNullOrEmpty(pgDatabase) && !string.IsNullOrEmpty(pgUser) && !string.IsNullOrEmpty(pgPassword))
 {
-    try
-    {
-        var uri = new Uri(connectionString);
-        var userInfo = uri.UserInfo?.Split(':');
-        if (userInfo?.Length == 2)
-        {
-            connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.Trim('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
-            Console.WriteLine("Successfully converted PostgreSQL URL to .NET format");
-        }
-        else
-        {
-            Console.WriteLine("ERROR: Invalid user info in connection string");
-            connectionString = null;
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"ERROR parsing connection string: {ex.Message}");
-        connectionString = null;
-    }
+    connectionString = $"Host={pgHost};Port={pgPort ?? "5432"};Database={pgDatabase};Username={pgUser};Password={pgPassword};SSL Mode=Require;Trust Server Certificate=true";
+    Console.WriteLine("Built connection string from Railway variables");
 }
-
-Console.WriteLine($"Final connection string: {(!string.IsNullOrEmpty(connectionString) ? "Valid" : "Invalid/Empty")}");
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine("Using fallback connection string from configuration");
+}
 
 if (!string.IsNullOrEmpty(connectionString))
 {
