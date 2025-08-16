@@ -55,25 +55,8 @@ builder.Services.AddCors(options =>
                 "https://localhost:7071"
               )
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
-    });
-    
-    // Add a more permissive policy for debugging
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
               .AllowAnyMethod();
-    });
-    
-    // Explicit policy for Azure Static Web Apps
-    options.AddPolicy("AllowAzure", policy =>
-    {
-        policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net")
-              .WithHeaders("content-type", "authorization", "accept", "x-requested-with")
-              .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-              .SetPreflightMaxAge(TimeSpan.FromMinutes(10));
+              // Removed .AllowCredentials() since we're only sending JSON body
     });
 });
 
