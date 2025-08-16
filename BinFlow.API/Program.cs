@@ -66,6 +66,15 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
+    
+    // Explicit policy for Azure Static Web Apps
+    options.AddPolicy("AllowAzure", policy =>
+    {
+        policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net")
+              .WithHeaders("content-type", "authorization", "accept", "x-requested-with")
+              .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+              .SetPreflightMaxAge(TimeSpan.FromMinutes(10));
+    });
 });
 
 var app = builder.Build();
@@ -99,12 +108,33 @@ app.Use(async (context, next) =>
     Console.WriteLine($"Request from: {context.Request.Headers.Origin}");
     Console.WriteLine($"Request method: {context.Request.Method}");
     Console.WriteLine($"Request path: {context.Request.Path}");
+    
+    // Add CORS headers manually for debugging
+    if (context.Request.Headers.ContainsKey("Origin"))
+    {
+        var origin = context.Request.Headers.Origin.ToString();
+        if (origin == "https://lively-field-072633610.2.azurestaticapps.net")
+        {
+            context.Response.Headers["Access-Control-Allow-Origin"] = origin;
+            context.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS";
+            context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, Accept, X-Requested-With";
+            context.Response.Headers["Access-Control-Max-Age"] = "86400";
+        }
+    }
+    
+    // Handle preflight requests
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 200;
+        return;
+    }
+    
     await next();
 });
 
+// Use multiple CORS policies
+app.UseCors("AllowAll"); // Most permissive for now
 app.UseHttpsRedirection();
-// Use more permissive CORS policy temporarily for debugging
-app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
