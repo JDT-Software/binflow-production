@@ -77,6 +77,22 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Ensure database is created and tables exist
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<BinFlowDbContext>();
+        Console.WriteLine("Attempting to ensure database is created...");
+        context.Database.EnsureCreated();
+        Console.WriteLine("Database tables created successfully!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database creation error: {ex.Message}");
+    }
+}
+
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
