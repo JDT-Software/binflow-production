@@ -49,7 +49,20 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorWasm", policy =>
     {
-        policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net")
+        policy.WithOrigins(
+                "https://lively-field-072633610.2.azurestaticapps.net",
+                "http://localhost:5108",
+                "https://localhost:7071"
+              )
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+    
+    // Add a more permissive policy for debugging
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -80,8 +93,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Add CORS debugging
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"Request from: {context.Request.Headers.Origin}");
+    Console.WriteLine($"Request method: {context.Request.Method}");
+    Console.WriteLine($"Request path: {context.Request.Path}");
+    await next();
+});
+
 app.UseHttpsRedirection();
-app.UseCors("AllowBlazorWasm");
+// Use more permissive CORS policy temporarily for debugging
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 
