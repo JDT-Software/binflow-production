@@ -1029,7 +1029,6 @@ C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\yk80vkhoqm.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\xqp7oolra1.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\8bcjawdnau.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\6bp7aq328v.gz
-C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\t7zd9xfk7g.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\cr654p9wpk.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\gidpz7z2pr.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\fveyapdap7.gz
@@ -1077,3 +1076,5 @@ C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\webcil\MudBlazor.wasm
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\xe2r7ag5wd.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\yolhphq995.gz
 C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\qzejyeb40p.gz
+C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\BinFlow.Client.sourcelink.json
+C:\BinFlow-WASM\BinFlow.Client\obj\Debug\net8.0\compressed\xaufgm76mz.gz

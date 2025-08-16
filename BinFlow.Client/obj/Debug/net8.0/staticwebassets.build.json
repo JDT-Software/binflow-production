@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+tvFTf3w1QMl8gybuOEKNcTRGiOzYhOUHqhuzEGwht0=",
+  "Hash": "40HO4/DjgFcuBhj7EMoSGZHbJ+rKsaVQGWHanOusDzM=",
   "Source": "BinFlow.Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -71,7 +71,7 @@
       "AssetTraitValue": "symbol",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Shared\\bin\\Debug\\net8.0\\BinFlow.Shared.pdb"
+      "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Shared\\bin\\Debug\\net6.0\\BinFlow.Shared.pdb"
     },
     {
       "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\BinFlow.Shared.wasm",
@@ -7256,25 +7256,6 @@
       "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\System.Runtime.Serialization.Xml.wasm"
     },
     {
-      "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\compressed\\t7zd9xfk7g.gz",
-      "SourceId": "BinFlow.Client",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "_framework/BinFlow.Shared.pdb.gz",
-      "AssetKind": "Build",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\BinFlow.Shared.pdb",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "CopyToOutputDirectory": "PreserveNewest",
-      "CopyToPublishDirectory": "Never",
-      "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\BinFlow.Shared.pdb"
-    },
-    {
       "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\compressed\\th81dlwdwd.gz",
       "SourceId": "BinFlow.Client",
       "SourceType": "Computed",
@@ -7634,6 +7615,25 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\System.Net.Http.wasm"
+    },
+    {
+      "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\compressed\\xaufgm76mz.gz",
+      "SourceId": "BinFlow.Client",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/BinFlow.Shared.pdb.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\BinFlow.Shared.pdb",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\BinFlow.Shared.pdb"
     },
     {
       "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\compressed\\xe2r7ag5wd.gz",
