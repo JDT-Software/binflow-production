@@ -44,26 +44,14 @@ else
     Console.WriteLine("Warning: No database connection found. API will use mock data only.");
 }
 
-// Add CORS for Blazor WASM - more permissive configuration
+// Add CORS for Blazor WASM - simplified and more permissive
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorWasm", policy =>
     {
-        if (builder.Environment.IsDevelopment())
-        {
-            // Development - allow localhost
-            policy.WithOrigins("http://localhost:5108", "https://localhost:5109")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        }
-        else
-        {
-            // Production - allow Azure Static Web Apps domain
-            policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
-        }
+        policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
