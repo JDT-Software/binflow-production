@@ -8,9 +8,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Entity Framework
-builder.Services.AddDbContext<BinFlowDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add Entity Framework with Railway database connection
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") 
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+Console.WriteLine($"Using connection string: {(!string.IsNullOrEmpty(connectionString) ? "Found" : "Not found")}");
+
+if (!string.IsNullOrEmpty(connectionString))
+{
+    builder.Services.AddDbContext<BinFlowDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+else
+{
+    Console.WriteLine("Warning: No database connection found. API will use mock data only.");
+}
 
 // Add CORS for Blazor WASM - more permissive configuration
 builder.Services.AddCors(options =>
