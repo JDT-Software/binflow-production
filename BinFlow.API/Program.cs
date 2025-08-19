@@ -44,12 +44,12 @@ else
     Console.WriteLine("Warning: No database connection found. API will use mock data only.");
 }
 
-// Add CORS policy
+// Add CORS policy - Very permissive for testing
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAzureStaticApp", policy =>
     {
-        policy.WithOrigins("https://lively-field-072633610.2.azurestaticapps.net") // your frontend
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
