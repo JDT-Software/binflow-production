@@ -465,7 +465,7 @@
 
         try
         {
-            await JSRuntime.InvokeVoidAsync("console.log", "=== SAVING HOURLY ENTRY ===");
+            await JSRuntime.InvokeVoidAsync("console.log", "=== SAVING HOURLY ENTRY TO /api/BinTippings ===");
             
             // Parse date more safely to avoid timezone issues
             DateTime entryDate;
@@ -533,6 +533,7 @@
             };
 
             // Create the bin tipping entry directly
+            await JSRuntime.InvokeVoidAsync("console.log", "🚀 Calling POST /api/BinTippings");
             var newBinTipping = await ProductionService.CreateBinTippingAsync(createBinTippingDto);
             
             await JSRuntime.InvokeVoidAsync("console.log", "✅ Hourly entry saved successfully");
