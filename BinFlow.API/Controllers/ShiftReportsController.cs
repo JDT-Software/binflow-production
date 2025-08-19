@@ -22,6 +22,9 @@ namespace BinFlow.API.Controllers
         {
             try
             {
+                Console.WriteLine($"GetShiftReports called with startDate: {startDate}, endDate: {endDate}");
+                
+                // Get ShiftReports with their BinTippings
                 var query = _context.ShiftReports.Include(s => s.BinTippings).AsQueryable();
 
                 if (startDate.HasValue)
@@ -31,6 +34,26 @@ namespace BinFlow.API.Controllers
                     query = query.Where(r => r.Date <= endDate.Value.Date);
 
                 var reports = await query.OrderByDescending(s => s.Date).ToListAsync();
+                
+                Console.WriteLine($"Found {reports.Count} shift reports from database");
+
+                // Recalculate totals from actual BinTippings for each report
+                foreach (var report in reports)
+                {
+                    if (report.BinTippings?.Any() == true)
+                    {
+                        report.TotalTipped = report.BinTippings.Sum(bt => bt.BinsTipped);
+                        report.AverageWeight = report.BinTippings.Average(bt => bt.AverageBinWeight);
+                        report.TotalDowntime = report.BinTippings.Sum(bt => bt.DownTime);
+                        Console.WriteLine($"Report {report.Id}: {report.BinTippings.Count} bin tippings, Total: {report.TotalTipped}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Report {report.Id}: No bin tippings found");
+                    }
+                }
+
+                Console.WriteLine($"Returning {reports.Count} reports");
                 return reports;
             }
             catch (Exception ex)
