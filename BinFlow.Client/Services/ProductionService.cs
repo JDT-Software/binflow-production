@@ -154,6 +154,7 @@ namespace BinFlow.Client.Services
         {
             try
             {
+                Console.WriteLine("🚀 ProductionService: POSTing to api/BinTippings");
                 var response = await _httpClient.PostAsJsonAsync("api/BinTippings", createDto);
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<BinTipping>() ?? new BinTipping();
