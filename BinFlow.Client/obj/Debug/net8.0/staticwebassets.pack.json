@@ -41,6 +41,10 @@
       "PackagePath": "staticwebassets\\sample-data\\weather.json"
     },
     {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\staticwebapp.config.json",
+      "PackagePath": "staticwebassets\\staticwebapp.config.json"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BinFlow.Client.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

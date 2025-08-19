@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using BinFlow.Shared.Models;
 
 namespace BinFlow.API.Data
@@ -17,11 +18,45 @@ namespace BinFlow.API.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // ===================================================================
+            // UTC DateTime Conversion - Fixes PostgreSQL timezone issues
+            // ===================================================================
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(new ValueConverter<DateTime, DateTime>(
+                            // To database: Convert to UTC
+                            v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
+                            // From database: Specify as UTC
+                            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                        ));
+                    }
+                    else if (property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(new ValueConverter<DateTime?, DateTime?>(
+                            // To database: Convert to UTC if not null
+                            v => v.HasValue ? (v.Value.Kind == DateTimeKind.Utc ? v.Value : v.Value.ToUniversalTime()) : v,
+                            // From database: Specify as UTC if not null
+                            v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : v
+                        ));
+                    }
+                }
+            }
+
+            // ===================================================================
+            // Table Configuration
+            // ===================================================================
             // Configure table names to match Supabase (snake_case)
             modelBuilder.Entity<ShiftReport>().ToTable("shift_reports");
             modelBuilder.Entity<BinTipping>().ToTable("bin_tippings");
             modelBuilder.Entity<HourlyEntry>().ToTable("hourly_entries");
 
+            // ===================================================================
+            // Column Configuration
+            // ===================================================================
             // Configure column names to match database schema
             modelBuilder.Entity<ShiftReport>(entity =>
             {
@@ -55,6 +90,9 @@ namespace BinFlow.API.Data
                 entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             });
 
+            // ===================================================================
+            // Relationship Configuration
+            // ===================================================================
             // Configure relationships
             modelBuilder.Entity<BinTipping>()
                 .HasOne<ShiftReport>()

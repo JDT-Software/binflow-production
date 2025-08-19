@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "40HO4/DjgFcuBhj7EMoSGZHbJ+rKsaVQGWHanOusDzM=",
+  "Hash": "yrEMNqSoC/aHEj188pVdsURdVykGaDxJImQv+EtxKsw=",
   "Source": "BinFlow.Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -8280,6 +8280,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\sample-data\\weather.json"
+    },
+    {
+      "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\staticwebapp.config.json",
+      "SourceId": "BinFlow.Client",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "staticwebapp.config.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\staticwebapp.config.json"
     },
     {
       "Identity": "C:\\Users\\User\\.nuget\\packages\\mudblazor\\8.11.0\\staticwebassets\\MudBlazor.min.css",
