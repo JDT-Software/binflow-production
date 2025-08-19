@@ -111,4 +111,18 @@ namespace BinFlow.Shared.Models
         public int TotalDowntimeToday { get; set; }
         public List<ProductionMetrics> RecentMetrics { get; set; } = new();
     }
+
+    // DTO for creating bin tippings
+    public class CreateBinTippingDto
+    {
+        public DateTime Date { get; set; }
+        public TimeSpan Time { get; set; }
+        public string LineManager { get; set; } = string.Empty;
+        public string Shift { get; set; } = string.Empty;
+        public int BinsTipped { get; set; }
+        public double AverageBinWeight { get; set; }
+        public int DownTime { get; set; }
+        public string ReasonsNotes { get; set; } = string.Empty;
+        public bool IsLunchBreak { get; set; }
+    }
 }

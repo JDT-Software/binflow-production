@@ -150,6 +150,21 @@ namespace BinFlow.Client.Services
             }
         }
 
+        public async Task<BinTipping> CreateBinTippingAsync(CreateBinTippingDto createDto)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/BinTippings", createDto);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadFromJsonAsync<BinTipping>() ?? new BinTipping();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating bin tipping: {ex.Message}");
+                throw;
+            }
+        }
+
         public void Dispose()
         {
             _pollTimer?.Dispose();

@@ -518,46 +518,22 @@
             await JSRuntime.InvokeVoidAsync("console.log", $"🕒 Selected time: {entryTimeString}");
             await JSRuntime.InvokeVoidAsync("console.log", $"🕒 Parsed time: {entryTime}");
             
-            var hourlyEntry = new BinTipping
+            // Create bin tipping directly using the new API
+            var createBinTippingDto = new CreateBinTippingDto
             {
+                Date = entryDate,
                 Time = entryTime.ToTimeSpan(),
+                LineManager = lineManager,
+                Shift = selectedShift,
                 BinsTipped = isLunchBreak ? 0 : binsTipped,
                 AverageBinWeight = isLunchBreak ? 0 : averageBinWeight,
                 DownTime = downTime,
-                ReasonForNotAchievingTarget = reasonsNotes,
+                ReasonsNotes = reasonsNotes,
                 IsLunchBreak = isLunchBreak
             };
 
-            // Create or find today's shift report
-            var shiftReportDto = new CreateShiftReportDto
-            {
-                Date = entryDate,
-                LineManager = lineManager,
-                Shift = selectedShift
-            };
-
-            // Get or create shift report for this date/shift/manager combination
-            var existingReports = await ProductionService.GetShiftReportsByDateRangeAsync(entryDate, entryDate);
-            var existingReport = existingReports.FirstOrDefault(r => 
-                r.LineManager == lineManager && 
-                r.Shift == selectedShift && 
-                r.Date.Date == entryDate.Date);
-
-            int shiftReportId;
-            if (existingReport != null)
-            {
-                shiftReportId = existingReport.Id;
-                await JSRuntime.InvokeVoidAsync("console.log", $"Using existing shift report: {shiftReportId}");
-            }
-            else
-            {
-                var newReport = await ProductionService.CreateShiftReportAsync(shiftReportDto);
-                shiftReportId = newReport.Id;
-                await JSRuntime.InvokeVoidAsync("console.log", $"Created new shift report: {shiftReportId}");
-            }
-
-            // Add the hourly entry
-            await ProductionService.AddBinTippingEntryAsync(shiftReportId, hourlyEntry);
+            // Create the bin tipping entry directly
+            var newBinTipping = await ProductionService.CreateBinTippingAsync(createBinTippingDto);
             
             await JSRuntime.InvokeVoidAsync("console.log", "✅ Hourly entry saved successfully");
             
@@ -569,8 +545,8 @@
             var displayEntry = new BinTippingDisplay 
             { 
                 Time = entryTime.ToTimeSpan(), 
-                BinsTipped = binsTipped, 
-                AverageBinWeight = averageBinWeight, 
+                BinsTipped = isLunchBreak ? 0 : binsTipped, 
+                AverageBinWeight = isLunchBreak ? 0 : averageBinWeight, 
                 DownTime = downTime,
                 IsLunchBreak = isLunchBreak,
                 ReasonForNotAchievingTarget = reasonsNotes,
