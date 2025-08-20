@@ -522,9 +522,8 @@
                 totalDowntimeToday = todaysHourlyEntries.Sum(e => e.DownTime);
                 hourlyEntriesCount = todaysHourlyEntries.Count;
                 
-                // Calculate bins per hour consistently with Shift Reports page
-                // Total bins divided by number of working hours (same as Shift Reports calculation)
-                avgBinsPerHour = workingEntries.Any() ? (double)totalBinsToday / workingEntries.Count : 0;
+                // ✅ FIXED: Calculate bins per hour correctly - Total Bins ÷ Total Entries
+                avgBinsPerHour = todaysHourlyEntries.Any() ? (double)totalBinsToday / todaysHourlyEntries.Count : 0;
                 
                 // Use the same calculation for efficiency display (bins per hour)
                 efficiencyToday = avgBinsPerHour;
