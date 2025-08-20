@@ -23,15 +23,17 @@ namespace BinFlow.API.Controllers
             try
             {
                 // First, find or create a shift report for this date
+                // Ensure we're using the exact date without any timezone conversion issues
+                var dateOnly = DateTime.SpecifyKind(createDto.Date.Date, DateTimeKind.Unspecified);
                 var existingShiftReport = await _context.ShiftReports
-                    .FirstOrDefaultAsync(sr => sr.Date.Date == createDto.Date.Date && sr.LineManager == createDto.LineManager);
+                    .FirstOrDefaultAsync(sr => sr.Date.Date == dateOnly && sr.LineManager == createDto.LineManager);
 
                 if (existingShiftReport == null)
                 {
                     // Create a new shift report
                     existingShiftReport = new ShiftReport
                     {
-                        Date = createDto.Date.Date,
+                        Date = dateOnly,
                         LineManager = createDto.LineManager,
                         Shift = createDto.Shift,
                         CreatedAt = DateTime.UtcNow,

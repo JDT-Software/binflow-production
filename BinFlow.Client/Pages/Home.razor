@@ -521,12 +521,13 @@
                 avgWeightToday = workingEntries.Any() ? workingEntries.Average(e => e.AverageBinWeight) : 0;
                 totalDowntimeToday = todaysHourlyEntries.Sum(e => e.DownTime);
                 hourlyEntriesCount = todaysHourlyEntries.Count;
-                avgBinsPerHour = workingEntries.Any() ? workingEntries.Average(e => e.BinsTipped) : 0;
                 
-                // Calculate efficiency: working time vs total time
-                var workingHours = workingEntries.Count;
-                efficiencyToday = workingHours > 0 ? 
-                    Math.Max(0, ((workingHours * 60.0) - totalDowntimeToday) / (workingHours * 60.0) * 100) : 0;
+                // Calculate bins per hour consistently with Shift Reports page
+                // Total bins divided by number of working hours (same as Shift Reports calculation)
+                avgBinsPerHour = workingEntries.Any() ? (double)totalBinsToday / workingEntries.Count : 0;
+                
+                // Use the same calculation for efficiency display (bins per hour)
+                efficiencyToday = avgBinsPerHour;
             }
             else
             {
@@ -547,9 +548,10 @@
                         totalDowntimeToday = todaysShiftReports.Sum(r => r.TotalDowntime);
                         hourlyEntriesCount = todaysShiftReports.Count;
                         
-                        // Calculate bins per hour based on shift data
-                        var totalShiftHours = todaysShiftReports.Count * 8; // Assuming 8 hour shifts
-                        efficiencyToday = totalShiftHours > 0 ? (double)totalBinsToday / totalShiftHours : 0;
+                        // Calculate bins per hour consistently with hourly entries calculation
+                        // For shift reports, we need to estimate working hours from bin tippings
+                        var avgWorkingHoursPerShift = 8; // Standard shift hours
+                        efficiencyToday = (double)totalBinsToday / avgWorkingHoursPerShift;
                     }
                     else
                     {
@@ -559,7 +561,7 @@
                         avgWeightToday = recentData.Any() ? recentData.Average(r => r.AverageWeight) : 0;
                         totalDowntimeToday = recentData.Sum(r => r.TotalDowntime);
                         hourlyEntriesCount = recentData.Count;
-                        efficiencyToday = recentData.Any() ? recentData.Average(r => r.TotalTipped) / 8.0 : 0;
+                        efficiencyToday = recentData.Any() ? (double)recentData.Sum(r => r.TotalTipped) / (recentData.Count * 8.0) : 0;
                     }
                 }
                 else
