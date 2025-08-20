@@ -85,9 +85,7 @@ namespace BinFlow.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BinTipping>>> GetBinTippings()
         {
-            return await _context.BinTippings
-                .Include(bt => bt.ShiftReport)
-                .ToListAsync();
+            return await _context.BinTippings.ToListAsync();
         }
     }
 

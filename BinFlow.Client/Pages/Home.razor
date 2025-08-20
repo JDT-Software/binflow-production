@@ -504,26 +504,17 @@
             // Clear previous data
             todaysHourlyEntries.Clear();
             
-            // Get today's BinTippings directly (the real hourly entries!)
-            var todaysBinTippings = await ProductionService.GetBinTippingsByDateAsync(DateTime.Today);
+            // Get today's shift reports
+            var todayReports = await ProductionService.GetShiftReportsByDateRangeAsync(DateTime.Today, DateTime.Today);
             
-            if (todaysBinTippings.Any())
+            // Extract hourly entries from today's shift reports
+            await LoadTodaysHourlyEntries(todayReports);
+            
+            if (todaysHourlyEntries.Any())
             {
                 hasData = true;
                 
-                // Convert BinTippings to HourlyEntryDisplay
-                todaysHourlyEntries = todaysBinTippings.Select(bt => new HourlyEntryDisplay
-                {
-                    Time = bt.Time,
-                    BinsTipped = bt.BinsTipped,
-                    AverageBinWeight = bt.AverageBinWeight,
-                    DownTime = bt.DownTime,
-                    IsLunchBreak = bt.IsLunchBreak,
-                    LineManager = bt.LineManager ?? "Unknown",
-                    Shift = bt.Shift ?? "Unknown"
-                }).ToList();
-                
-                // Calculate stats from actual BinTippings
+                // Calculate stats from actual hourly entries
                 var workingEntries = todaysHourlyEntries.Where(e => !e.IsLunchBreak).ToList();
                 
                 totalBinsToday = workingEntries.Sum(e => e.BinsTipped);
@@ -531,23 +522,46 @@
                 totalDowntimeToday = todaysHourlyEntries.Sum(e => e.DownTime);
                 hourlyEntriesCount = todaysHourlyEntries.Count;
                 
-                // ✅ CORRECT CALCULATION: Total bins ÷ Total entries = bins per hour
+                // ✅ FIXED: Calculate bins per hour correctly - Total Bins ÷ Total Entries
                 avgBinsPerHour = todaysHourlyEntries.Any() ? (double)totalBinsToday / todaysHourlyEntries.Count : 0;
+                
+                // Use the same calculation for efficiency display (bins per hour)
                 efficiencyToday = avgBinsPerHour;
             }
             else
             {
-                // Fallback to shift reports if no BinTippings data
-                var todayReports = await ProductionService.GetShiftReportsByDateRangeAsync(DateTime.Today, DateTime.Today);
+                // Fallback to shift reports data to show something
+                recentReports = await ProductionService.GetAllShiftReportsAsync();
                 
-                if (todayReports.Any())
+                if (recentReports.Any())
                 {
-                    hasData = true;
-                    totalBinsToday = todayReports.Sum(r => r.TotalTipped);
-                    avgWeightToday = todayReports.Any() ? todayReports.Average(r => r.AverageWeight) : 0;
-                    totalDowntimeToday = todayReports.Sum(r => r.TotalDowntime);
-                    hourlyEntriesCount = todayReports.Count;
-                    efficiencyToday = todayReports.Any() ? (double)totalBinsToday / todayReports.Count : 0;
+                    hasData = true; // Show stats even with basic data
+                    
+                    // Calculate stats from shift reports directly
+                    var todaysShiftReports = recentReports.Where(r => r.Date.Date == DateTime.Today).ToList();
+                    
+                    if (todaysShiftReports.Any())
+                    {
+                        totalBinsToday = todaysShiftReports.Sum(r => r.TotalTipped);
+                        avgWeightToday = todaysShiftReports.Any() ? todaysShiftReports.Average(r => r.AverageWeight) : 0;
+                        totalDowntimeToday = todaysShiftReports.Sum(r => r.TotalDowntime);
+                        hourlyEntriesCount = todaysShiftReports.Count;
+                        
+                        // Calculate bins per hour consistently with hourly entries calculation
+                        // For shift reports, we need to estimate working hours from bin tippings
+                        var avgWorkingHoursPerShift = 8; // Standard shift hours
+                        efficiencyToday = (double)totalBinsToday / avgWorkingHoursPerShift;
+                    }
+                    else
+                    {
+                        // Use recent data if no today's data
+                        var recentData = recentReports.Take(5).ToList();
+                        totalBinsToday = recentData.Sum(r => r.TotalTipped);
+                        avgWeightToday = recentData.Any() ? recentData.Average(r => r.AverageWeight) : 0;
+                        totalDowntimeToday = recentData.Sum(r => r.TotalDowntime);
+                        hourlyEntriesCount = recentData.Count;
+                        efficiencyToday = recentData.Any() ? (double)recentData.Sum(r => r.TotalTipped) / (recentData.Count * 8.0) : 0;
+                    }
                 }
                 else
                 {
@@ -564,6 +578,7 @@
         }
         catch (Exception ex)
         {
+            // Log error and ensure hasData is false
             await JSRuntime.InvokeVoidAsync("console.error", $"Error loading dashboard data: {ex.Message}");
             hasData = false;
         }
