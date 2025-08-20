@@ -13,6 +13,22 @@
       "PackagePath": "staticwebassets\\BinFlow.Client.styles.css"
     },
     {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\android-chrome-192x192.png",
+      "PackagePath": "staticwebassets\\android-chrome-192x192.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\android-chrome-512x512.png",
+      "PackagePath": "staticwebassets\\android-chrome-512x512.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\apple-touch-icon.png",
+      "PackagePath": "staticwebassets\\apple-touch-icon.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\binflow-logo.png",
+      "PackagePath": "staticwebassets\\binflow-logo.png"
+    },
+    {
       "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\app.css",
       "PackagePath": "staticwebassets\\css\\app.css"
     },
@@ -25,12 +41,16 @@
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon.png",
-      "PackagePath": "staticwebassets\\favicon.png"
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon-16x16.png",
+      "PackagePath": "staticwebassets\\favicon-16x16.png"
     },
     {
-      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\icon-192.png",
-      "PackagePath": "staticwebassets\\icon-192.png"
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon-32x32.png",
+      "PackagePath": "staticwebassets\\favicon-32x32.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
       "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\index.html",

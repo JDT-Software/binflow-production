@@ -28,6 +28,14 @@ namespace BinFlow.Shared.Models
         public int DownTime { get; set; }
         public string ReasonForNotAchievingTarget { get; set; } = string.Empty;
         public bool IsLunchBreak { get; set; }
+        
+        // Navigation property
+        public ShiftReport? ShiftReport { get; set; }
+        
+        // Convenience properties for easy access
+        public DateTime Date => ShiftReport?.Date ?? DateTime.MinValue;
+        public string LineManager => ShiftReport?.LineManager ?? string.Empty;
+        public string Shift => ShiftReport?.Shift ?? string.Empty;
     }
 
     // Hourly entry model for the new system

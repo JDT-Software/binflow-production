@@ -14,5 +14,8 @@ namespace BinFlow.Client.Services
         Task DeleteShiftReportAsync(int id);
         Task AddBinTippingEntryAsync(int shiftReportId, BinTipping binTipping);
         Task<BinTipping> CreateBinTippingAsync(CreateBinTippingDto createDto);
+        Task<List<BinTipping>> GetBinTippingsAsync();
+        Task<List<BinTipping>> GetBinTippingsByDateAsync(DateTime date);
+        Task<List<BinTipping>> GetBinTippingsByDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 }

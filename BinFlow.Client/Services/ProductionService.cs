@@ -166,6 +166,48 @@ namespace BinFlow.Client.Services
             }
         }
 
+        public async Task<List<BinTipping>> GetBinTippingsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<List<BinTipping>>("api/BinTippings");
+                return response ?? new List<BinTipping>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching bin tippings: {ex.Message}");
+                return new List<BinTipping>();
+            }
+        }
+
+        public async Task<List<BinTipping>> GetBinTippingsByDateAsync(DateTime date)
+        {
+            try
+            {
+                var allBinTippings = await GetBinTippingsAsync();
+                return allBinTippings.Where(bt => bt.Date.Date == date.Date).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching bin tippings by date: {ex.Message}");
+                return new List<BinTipping>();
+            }
+        }
+
+        public async Task<List<BinTipping>> GetBinTippingsByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                var allBinTippings = await GetBinTippingsAsync();
+                return allBinTippings.Where(bt => bt.Date.Date >= startDate.Date && bt.Date.Date <= endDate.Date).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching bin tippings by date range: {ex.Message}");
+                return new List<BinTipping>();
+            }
+        }
+
         public void Dispose()
         {
             _pollTimer?.Dispose();
