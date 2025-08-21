@@ -22,16 +22,27 @@ namespace BinFlow.API.Controllers
         {
             try
             {
+                // 🔍 DEBUG: Log what we're receiving
+                Console.WriteLine($"🔍 Received Date: {createDto.Date}");
+                Console.WriteLine($"🔍 Received Date Kind: {createDto.Date.Kind}");
+                Console.WriteLine($"🔍 Received Date UTC: {createDto.Date.ToUniversalTime()}");
+                Console.WriteLine($"🔍 Received Date Local: {createDto.Date.ToLocalTime()}");
+                Console.WriteLine($"🔍 Just Date part: {createDto.Date.Date}");
+                
+                // 🔧 FIXED: Use the exact date as UTC without compensation
+                var targetDate = new DateTime(createDto.Date.Year, createDto.Date.Month, createDto.Date.Day, 0, 0, 0, DateTimeKind.Utc);
+                Console.WriteLine($"🔍 Target Date: {targetDate}");
+                
                 // First, find or create a shift report for this date
                 var existingShiftReport = await _context.ShiftReports
-                    .FirstOrDefaultAsync(sr => sr.Date.Date == createDto.Date.Date && sr.LineManager == createDto.LineManager);
+                    .FirstOrDefaultAsync(sr => sr.Date.Date == targetDate.Date && sr.LineManager == createDto.LineManager);
 
                 if (existingShiftReport == null)
                 {
                     // Create a new shift report
                     existingShiftReport = new ShiftReport
                     {
-                        Date = createDto.Date.Date,
+                        Date = targetDate, // 🔧 FIXED: Use the properly constructed target date
                         LineManager = createDto.LineManager,
                         Shift = createDto.Shift,
                         CreatedAt = DateTime.UtcNow,

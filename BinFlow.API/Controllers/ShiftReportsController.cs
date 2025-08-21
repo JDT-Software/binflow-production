@@ -31,6 +31,24 @@ namespace BinFlow.API.Controllers
                     query = query.Where(r => r.Date <= endDate.Value.Date);
 
                 var reports = await query.OrderByDescending(s => s.Date).ToListAsync();
+                
+                // 🔧 CALCULATE TOTALS from BinTippings
+                foreach (var report in reports)
+                {
+                    if (report.BinTippings?.Any() == true)
+                    {
+                        report.TotalTipped = report.BinTippings.Sum(b => b.BinsTipped);
+                        report.AverageWeight = Math.Round(report.BinTippings.Average(b => b.AverageBinWeight), 2);
+                        report.TotalDowntime = report.BinTippings.Sum(b => b.DownTime);
+                    }
+                    else
+                    {
+                        report.TotalTipped = 0;
+                        report.AverageWeight = 0;
+                        report.TotalDowntime = 0;
+                    }
+                }
+                
                 return reports;
             }
             catch (Exception ex)
@@ -70,6 +88,14 @@ namespace BinFlow.API.Controllers
             if (shiftReport == null)
             {
                 return NotFound();
+            }
+
+            // 🔧 CALCULATE TOTALS for single report too
+            if (shiftReport.BinTippings?.Any() == true)
+            {
+                shiftReport.TotalTipped = shiftReport.BinTippings.Sum(b => b.BinsTipped);
+                shiftReport.AverageWeight = Math.Round(shiftReport.BinTippings.Average(b => b.AverageBinWeight), 2);
+                shiftReport.TotalDowntime = shiftReport.BinTippings.Sum(b => b.DownTime);
             }
 
             return shiftReport;
@@ -144,24 +170,47 @@ namespace BinFlow.API.Controllers
         {
             var today = DateTime.Today;
             
+            // 🔧 GET REPORTS WITH CALCULATED TOTALS
             var todayShifts = await _context.ShiftReports
+                .Include(s => s.BinTippings)
                 .Where(s => s.Date == today)
                 .ToListAsync();
+                
+            // Calculate totals for today's shifts
+            foreach (var shift in todayShifts)
+            {
+                if (shift.BinTippings?.Any() == true)
+                {
+                    shift.TotalTipped = shift.BinTippings.Sum(b => b.BinsTipped);
+                    shift.AverageWeight = Math.Round(shift.BinTippings.Average(b => b.AverageBinWeight), 2);
+                    shift.TotalDowntime = shift.BinTippings.Sum(b => b.DownTime);
+                }
+            }
 
-            var recentMetrics = await _context.ShiftReports
+            var recentShifts = await _context.ShiftReports
+                .Include(s => s.BinTippings)
                 .Where(s => s.Date >= today.AddDays(-7))
                 .OrderByDescending(s => s.Date)
-                .Select(s => new ProductionMetrics
+                .ToListAsync();
+                
+            // Calculate totals for recent shifts and create metrics
+            var recentMetrics = recentShifts.Select(s => 
+            {
+                var totalTipped = s.BinTippings?.Sum(b => b.BinsTipped) ?? 0;
+                var avgWeight = s.BinTippings?.Any() == true ? Math.Round(s.BinTippings.Average(b => b.AverageBinWeight), 2) : 0;
+                var totalDowntime = s.BinTippings?.Sum(b => b.DownTime) ?? 0;
+                
+                return new ProductionMetrics
                 {
                     Date = s.Date,
-                    TotalBinsTipped = s.TotalTipped,
-                    AverageWeight = s.AverageWeight,
-                    TotalDowntime = s.TotalDowntime,
-                    EfficiencyPercentage = s.TotalDowntime > 0 ? 
-                        Math.Round((1.0 - (s.TotalDowntime / 480.0)) * 100, 2) : 100,
+                    TotalBinsTipped = totalTipped,
+                    AverageWeight = avgWeight,
+                    TotalDowntime = totalDowntime,
+                    EfficiencyPercentage = totalDowntime > 0 ? 
+                        Math.Round((1.0 - (totalDowntime / 480.0)) * 100, 2) : 100,
                     LineManager = s.LineManager
-                })
-                .ToListAsync();
+                };
+            }).ToList();
 
             var stats = new DashboardStats
             {

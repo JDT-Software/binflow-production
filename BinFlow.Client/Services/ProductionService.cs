@@ -56,6 +56,10 @@ namespace BinFlow.Client.Services
         {
             try
             {
+                // 🔍 DEBUG: Check what URL we're actually calling
+                Console.WriteLine($"🔍 HttpClient BaseAddress: {_httpClient.BaseAddress}");
+                Console.WriteLine($"🔍 Full URL will be: {new Uri(_httpClient.BaseAddress, "api/ShiftReports")}");
+                
                 var response = await _httpClient.GetFromJsonAsync<List<ShiftReport>>("api/ShiftReports");
                 return response ?? new List<ShiftReport>();
             }

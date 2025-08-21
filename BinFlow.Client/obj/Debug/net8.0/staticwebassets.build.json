@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yrEMNqSoC/aHEj188pVdsURdVykGaDxJImQv+EtxKsw=",
+  "Hash": "Ej29DgzwsknJGPPH+shzOgmJ+UY/1jmlkfi64xL12Ro=",
   "Source": "BinFlow.Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -8149,6 +8149,25 @@
       "OriginalItemSpec": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\BinFlow.Client.bundle.scp.css"
     },
     {
+      "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\binflow-logo.png",
+      "SourceId": "BinFlow.Client",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "binflow-logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\binflow-logo.png"
+    },
+    {
       "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\app.css",
       "SourceId": "BinFlow.Client",
       "SourceType": "Discovered",
@@ -8204,6 +8223,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon.ico",
+      "SourceId": "BinFlow.Client",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "favicon.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
       "Identity": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon.png",

@@ -10,7 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // Configure HTTP client to call our API
 var apiBaseUrl = builder.HostEnvironment.IsDevelopment() 
-    ? "http://localhost:5059/"
+    ? "http://localhost:5059/"  // ✅ CORRECTED: Back to 5059 to match API server
     : "https://binflow-production-production.up.railway.app/"; // Railway API URL
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseUrl) });

@@ -30,8 +30,9 @@ if (!string.IsNullOrEmpty(pgHost) && !string.IsNullOrEmpty(pgDatabase) && !strin
 }
 else
 {
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine("Using fallback connection string from configuration");
+    // Railway PostgreSQL fallback for local development
+    connectionString = "Host=gondola.proxy.rlwy.net;Port=35904;Database=railway;Username=postgres;Password=cuXAkVzsySNtqrBDkPRIXrjqLmSguJcJ;SSL Mode=Require;Trust Server Certificate=true;Timeout=60;Command Timeout=60;Pooling=true;Connection Lifetime=0";
+    Console.WriteLine("Using Railway PostgreSQL fallback connection string");
 }
 
 if (!string.IsNullOrEmpty(connectionString))
@@ -44,14 +45,15 @@ else
     Console.WriteLine("Warning: No database connection found. API will use mock data only.");
 }
 
-// Add CORS policy - Very permissive for testing
+// 🔧 FIXED CORS - Allow Blazor client specifically
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAzureStaticApp", policy =>
+    options.AddPolicy("AllowBlazorClient", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5108", "https://localhost:5108")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -80,11 +82,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// 🚀 Use CORS here (before auth, before controllers)
-app.UseCors("AllowAzureStaticApp");
+// 🔧 FIXED: Use the correct CORS policy name
+app.UseCors("AllowBlazorClient");
 
 app.UseHttpsRedirection();
+
+// 🎯 CRITICAL: Serve static files for any wwwroot content
+app.UseStaticFiles();
+
+app.UseRouting();
 app.UseAuthorization();
+
+// 🎯 CRITICAL: Map API controllers FIRST
 app.MapControllers();
+
+// 🎯 CLEAN: Simple fallback to index.html for non-API routes
+app.MapFallbackToFile("index.html");
 
 app.Run();

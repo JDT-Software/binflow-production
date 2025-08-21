@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\BinFlow.Client.styles.css"
     },
     {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\binflow-logo.png",
+      "PackagePath": "staticwebassets\\binflow-logo.png"
+    },
+    {
       "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\app.css",
       "PackagePath": "staticwebassets\\css\\app.css"
     },
@@ -23,6 +27,10 @@
     {
       "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
       "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon.png",
