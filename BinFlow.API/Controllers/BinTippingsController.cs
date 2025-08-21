@@ -34,6 +34,8 @@ namespace BinFlow.API.Controllers
                 Console.WriteLine($"🔍 Target Date: {targetDate}");
                 
                 // First, find or create a shift report for this date
+                // Ensure we're using the exact date without any timezone conversion issues
+                var dateOnly = DateTime.SpecifyKind(createDto.Date.Date, DateTimeKind.Unspecified);
                 var existingShiftReport = await _context.ShiftReports
                     .FirstOrDefaultAsync(sr => sr.Date.Date == targetDate.Date && sr.LineManager == createDto.LineManager);
 

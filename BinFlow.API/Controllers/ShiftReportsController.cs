@@ -22,6 +22,9 @@ namespace BinFlow.API.Controllers
         {
             try
             {
+                Console.WriteLine($"GetShiftReports called with startDate: {startDate}, endDate: {endDate}");
+                
+                // Get ShiftReports with their BinTippings
                 var query = _context.ShiftReports.Include(s => s.BinTippings).AsQueryable();
 
                 if (startDate.HasValue)
