@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "BinFlow.Client",
   "resources": {
-    "hash": "sha256-Y4DU1xii1mVk/v2XfY1NCzEGn0RAyHSRwB7/BE1ehYA=",
+    "hash": "sha256-Tp+gKRmye1kJ3C8CUBPoDG4Mwv1rvBJu3vYu7Vpr/jk=",
     "jsModuleNative": {
       "dotnet.native.8.0.18.yo3atmw4rl.js": "sha256-1QpKPnxEuRCElzcp+e3MrovJeAJkuzqKmRQay/6Aa08="
     },
@@ -215,12 +215,12 @@
       "mscorlib.wasm": "sha256-UnQd0YPXNpwbXsKqO8RAqgUVuwZsSpprfAIPpdV/y1Q=",
       "netstandard.wasm": "sha256-/QbD8JDZyYwfyk89W3qJL3HTAINDCVziZIySHIZcDhw=",
       "System.Private.CoreLib.wasm": "sha256-oBqNgH7R24FqGbaL3XnfQDqn3rk28jERFosgAryKT6U=",
-      "BinFlow.Shared.wasm": "sha256-hF+vGtkj1bc6KhY71VXGvjIH9Bu3rmOZ/LpJ631p/5Q=",
-      "BinFlow.Client.wasm": "sha256-UJmZlU39iqvNiE4aGjhBeervwcvsJvWaT0d2Kf+rBgM="
+      "BinFlow.Shared.wasm": "sha256-IHzpB4qyQqjY7/x3uVr3yDKn26DLTTfhQFg7eELWvKE=",
+      "BinFlow.Client.wasm": "sha256-TFucvaSuOkrZCaoULFJcVxIMd23TjFUh2ldkxB0lZ7Q="
     },
     "pdb": {
-      "BinFlow.Shared.pdb": "sha256-T4eNBMgt0jRB7hU4h+i3PBA1MuRj2N5aV4rFKEgWsDA=",
-      "BinFlow.Client.pdb": "sha256-hxNkXXCz8zMtwz8vReK58Fn6V9p6WFyXMLW1buVP2/I="
+      "BinFlow.Shared.pdb": "sha256-ZS6JGyl95M1+u2dc6h4xw3Sw2rtIR1yZoiHDGHgaQiw=",
+      "BinFlow.Client.pdb": "sha256-HrIPHALPxh5gBVIyaKcMzvbur+RWRtKhBcVQvY2ErVs="
     }
   },
   "cacheBootResources": true,
