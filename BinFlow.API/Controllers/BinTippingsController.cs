@@ -16,9 +16,9 @@ namespace BinFlow.API.Controllers
         {
             _context = context;
             _southAfricaTimeZone = TimeZoneInfo.CreateCustomTimeZone(
-                "SAST", 
-                TimeSpan.FromHours(2), 
-                "South Africa Standard Time", 
+                "SAST",
+                TimeSpan.FromHours(2),
+                "South Africa Standard Time",
                 "SAST"
             );
         }
@@ -30,13 +30,13 @@ namespace BinFlow.API.Controllers
             {
                 var receivedDate = DateTime.SpecifyKind(createDto.Date, DateTimeKind.Unspecified);
                 var southAfricaDate = TimeZoneInfo.ConvertTimeFromUtc(
-                    TimeZoneInfo.ConvertTimeToUtc(receivedDate, _southAfricaTimeZone), 
+                    TimeZoneInfo.ConvertTimeToUtc(receivedDate, _southAfricaTimeZone),
                     _southAfricaTimeZone);
 
                 var dateForStorage = southAfricaDate.Date;
-                
+
                 var existingShiftReport = await _context.ShiftReports
-                    .FirstOrDefaultAsync(sr => sr.Date.Date == dateForStorage && 
+                    .FirstOrDefaultAsync(sr => sr.Date.Date == dateForStorage &&
                                                sr.LineManager == createDto.LineManager);
 
                 if (existingShiftReport == null)
