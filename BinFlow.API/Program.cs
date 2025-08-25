@@ -45,15 +45,19 @@ else
     Console.WriteLine("Warning: No database connection found. API will use mock data only.");
 }
 
-// 🔧 FIXED CORS - Allow Blazor client specifically
+// FIXED CORS - Allow both local and deployed frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", policy =>
     {
-        policy.WithOrigins("http://localhost:5108", "https://localhost:5108")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(
+            "http://localhost:5108", 
+            "https://localhost:5108",
+            "https://lively-field-072633610.2.azurestaticapps.net"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 
@@ -82,21 +86,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// 🔧 FIXED: Use the correct CORS policy name
+// Use the correct CORS policy name
 app.UseCors("AllowBlazorClient");
 
 app.UseHttpsRedirection();
 
-// 🎯 CRITICAL: Serve static files for any wwwroot content
+// Serve static files for any wwwroot content
 app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthorization();
 
-// 🎯 CRITICAL: Map API controllers FIRST
+// Map API controllers FIRST
 app.MapControllers();
 
-// 🎯 CLEAN: Simple fallback to index.html for non-API routes
+// Simple fallback to index.html for non-API routes
 app.MapFallbackToFile("index.html");
 
 app.Run();
