@@ -15,7 +15,7 @@ namespace BinFlow.API.Controllers
         public BinTippingsController(BinFlowDbContext context)
         {
             _context = context;
-            _southAfricaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("South Africa Standard Time");
+            _southAfricaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Johannesburg");
         }
 
         // POST: api/bintippings
@@ -27,19 +27,19 @@ namespace BinFlow.API.Controllers
                 // Convert received date to South Africa timezone
                 var receivedDate = DateTime.SpecifyKind(createDto.Date, DateTimeKind.Unspecified);
                 var southAfricaDate = TimeZoneInfo.ConvertTimeFromUtc(
-                    TimeZoneInfo.ConvertTimeToUtc(receivedDate, _southAfricaTimeZone),
+                    TimeZoneInfo.ConvertTimeToUtc(receivedDate, _southAfricaTimeZone), 
                     _southAfricaTimeZone);
 
                 Console.WriteLine($"Received Date: {createDto.Date}");
                 Console.WriteLine($"South Africa Date: {southAfricaDate}");
                 Console.WriteLine($"Date for storage: {southAfricaDate.Date}");
-
+                
                 // Use South Africa date for all operations
                 var dateForStorage = southAfricaDate.Date;
-
+                
                 // First, find or create a shift report for this date
                 var existingShiftReport = await _context.ShiftReports
-                    .FirstOrDefaultAsync(sr => sr.Date.Date == dateForStorage &&
+                    .FirstOrDefaultAsync(sr => sr.Date.Date == dateForStorage && 
                                                sr.LineManager == createDto.LineManager);
 
                 if (existingShiftReport == null)
@@ -117,7 +117,7 @@ namespace BinFlow.API.Controllers
             {
                 // Convert to South Africa timezone for consistent querying
                 var southAfricaDate = TimeZoneInfo.ConvertTimeFromUtc(
-                    TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(date, DateTimeKind.Unspecified), _southAfricaTimeZone),
+                    TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(date, DateTimeKind.Unspecified), _southAfricaTimeZone), 
                     _southAfricaTimeZone).Date;
 
                 // Get shift reports for this date and then get their bin tippings
