@@ -33,23 +33,23 @@ namespace BinFlow.Client.Services
 
         private void StartSmartPolling()
         {
-            var now = DateTime.Now.TimeOfDay;
-            var isWorkHours = now >= TimeSpan.FromHours(8) && now <= TimeSpan.FromHours(18);
+            // var now = DateTime.Now.TimeOfDay;
+            // var isWorkHours = now >= TimeSpan.FromHours(8) && now <= TimeSpan.FromHours(18);
             
-            if (isWorkHours)
-            {
-                // Poll every 3 minutes during work hours
-                _pollTimer.Interval = TimeSpan.FromMinutes(3).TotalMilliseconds;
-                _pollTimer.Start();
-                Console.WriteLine("Started polling - work hours mode (3 minutes)");
-            }
-            else
-            {
-                // Poll every hour outside work hours to check if work hours started
-                _pollTimer.Interval = TimeSpan.FromHours(1).TotalMilliseconds;
-                _pollTimer.Start();
-                Console.WriteLine("Started polling - off hours mode (1 hour)");
-            }
+            // if (isWorkHours)
+            // {
+            //     // Poll every 3 minutes during work hours
+            //     _pollTimer.Interval = TimeSpan.FromMinutes(3).TotalMilliseconds;
+            //     _pollTimer.Start();
+            //     Console.WriteLine("Started polling - work hours mode (3 minutes)");
+            // }
+            // else
+            // {
+            //     // Poll every hour outside work hours to check if work hours started
+            //     _pollTimer.Interval = TimeSpan.FromHours(1).TotalMilliseconds;
+            //     _pollTimer.Start();
+            //     Console.WriteLine("Started polling - off hours mode (1 hour)");
+            // }
         }
 
         public async Task<List<ShiftReport>> GetShiftReportsAsync()

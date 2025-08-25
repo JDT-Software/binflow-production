@@ -483,7 +483,7 @@
         
         if (firstRender)
         {
-            // Refresh data every 30 seconds
+            @* // Refresh data every 30 seconds
             var timer = new System.Timers.Timer(30000);
             timer.Elapsed += async (sender, e) => 
             {
@@ -493,46 +493,61 @@
                     StateHasChanged();
                 });
             };
-            timer.Start();
+            timer.Start(); *@
         }
     }
 
 private async Task LoadDashboardData()
 {
+    await JSRuntime.InvokeVoidAsync("console.log", "🔍 LoadDashboardData() called at: " + DateTime.Now.ToString("HH:mm:ss"));
+
     try
     {
-        // 🔧 FIXED: Use dashboard endpoint like Dashboard page does
-        var dashboardStats = await ProductionService.GetDashboardStatsAsync();
+        // Get today's shift reports directly
+        var todayReports = await ProductionService.GetShiftReportsByDateRangeAsync(DateTime.Today, DateTime.Today);
         
-        if (dashboardStats != null)
+        // 🔧 DEBUG: Log what we're getting
+        await JSRuntime.InvokeVoidAsync("console.log", $"Today's date: {DateTime.Today:yyyy-MM-dd}");
+        await JSRuntime.InvokeVoidAsync("console.log", $"Shift reports found: {todayReports?.Count ?? 0}");
+        
+        if (todayReports?.Any() == true)
         {
             hasData = true;
             
-            // 🔧 Use dashboard calculated stats directly
-            totalBinsToday = dashboardStats.TotalBinsTippedToday;
-            totalDowntimeToday = dashboardStats.TotalDowntimeToday;
-            efficiencyToday = dashboardStats.AverageEfficiencyToday;
-            hourlyEntriesCount = dashboardStats.TotalShiftsToday;
+            // Calculate stats from today's shift reports
+            totalBinsToday = todayReports.Sum(r => r.TotalTipped);
+            totalDowntimeToday = todayReports.Sum(r => r.TotalDowntime);
+            avgWeightToday = todayReports.Average(r => r.AverageWeight);
             
-            // 🔧 FIXED: Get weight from recent metrics (any recent data, not just today)
-            if (dashboardStats.RecentMetrics?.Any() == true)
+            // 🔧 CORRECT FIX: Get the count of BinTippings (individual hourly entries)
+            var totalHourlyEntries = 0;
+            foreach (var report in todayReports)
             {
-                avgWeightToday = dashboardStats.RecentMetrics.Average(m => m.AverageWeight);
-            }
-            else
-            {
-                avgWeightToday = 0;
+                if (report.BinTippings != null)
+                {
+                    totalHourlyEntries += report.BinTippings.Count;
+                }
             }
             
-            // 🔧 FIXED: Calculate proper bins per hour
-            avgBinsPerHour = hourlyEntriesCount > 0 ? (double)totalBinsToday / hourlyEntriesCount : 0;
+            // Set the hourly entries count to the actual number of individual entries
+            hourlyEntriesCount = totalHourlyEntries;
             
-            // 🔧 Load today's detailed entries for the table
-            var todayReports = await ProductionService.GetShiftReportsByDateRangeAsync(DateTime.Today, DateTime.Today);
+            // 🔧 CORRECT CALCULATION: bins per hour using actual hourly entries count
+            avgBinsPerHour = totalHourlyEntries > 0 ? (double)totalBinsToday / totalHourlyEntries : 0;
+            
+            // 🔧 DEBUG: Log calculated values
+            await JSRuntime.InvokeVoidAsync("console.log", $"Total Bins: {totalBinsToday}");
+            await JSRuntime.InvokeVoidAsync("console.log", $"Total Hourly Entries: {totalHourlyEntries}");
+            await JSRuntime.InvokeVoidAsync("console.log", $"Bins per Hour: {avgBinsPerHour:F1}");
+            
+            efficiencyToday = avgBinsPerHour;
+            
+            // Load today's detailed entries for the table
             await LoadTodaysHourlyEntries(todayReports);
         }
         else
         {
+            await JSRuntime.InvokeVoidAsync("console.log", "No reports found for today");
             hasData = false;
             // Reset all stats
             totalBinsToday = 0;
@@ -541,11 +556,11 @@ private async Task LoadDashboardData()
             efficiencyToday = 0;
             hourlyEntriesCount = 0;
             avgBinsPerHour = 0;
+            todaysHourlyEntries.Clear();
         }
     }
     catch (Exception ex)
     {
-        // Log error and ensure hasData is false
         await JSRuntime.InvokeVoidAsync("console.error", $"Error loading dashboard data: {ex.Message}");
         hasData = false;
     }

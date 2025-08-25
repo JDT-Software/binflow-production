@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\BinFlow.Client.props" />
+</Project>

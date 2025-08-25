@@ -1,0 +1,77 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\compressed\\wjsxipzonr.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\obj\\Debug\\net8.0\\scopedcss\\bundle\\BinFlow.Client.styles.css",
+      "PackagePath": "staticwebassets\\BinFlow.Client.styles.css"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\android-chrome-192x192.png",
+      "PackagePath": "staticwebassets\\android-chrome-192x192.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\android-chrome-512x512.png",
+      "PackagePath": "staticwebassets\\android-chrome-512x512.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\apple-touch-icon.png",
+      "PackagePath": "staticwebassets\\apple-touch-icon.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon-16x16.png",
+      "PackagePath": "staticwebassets\\favicon-16x16.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\favicon-32x32.png",
+      "PackagePath": "staticwebassets\\favicon-32x32.png"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "C:\\BinFlow-WASM\\BinFlow.Client\\wwwroot\\staticwebapp.config.json",
+      "PackagePath": "staticwebassets\\staticwebapp.config.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BinFlow.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.BinFlow.Client.props",
+      "PackagePath": "build\\BinFlow.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.BinFlow.Client.props",
+      "PackagePath": "buildMultiTargeting\\BinFlow.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.BinFlow.Client.props",
+      "PackagePath": "buildTransitive\\BinFlow.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
