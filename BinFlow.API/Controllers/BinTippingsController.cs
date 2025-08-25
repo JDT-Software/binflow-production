@@ -10,10 +10,12 @@ namespace BinFlow.API.Controllers
     public class BinTippingsController : ControllerBase
     {
         private readonly BinFlowDbContext _context;
+        private readonly TimeZoneInfo _southAfricaTimeZone;
 
         public BinTippingsController(BinFlowDbContext context)
         {
             _context = context;
+            _southAfricaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("South Africa Standard Time");
         }
 
         // POST: api/bintippings
@@ -22,36 +24,42 @@ namespace BinFlow.API.Controllers
         {
             try
             {
-                // 🔍 DEBUG: Log what we're receiving
-                Console.WriteLine($"🔍 Received Date: {createDto.Date}");
-                Console.WriteLine($"🔍 Received Date Kind: {createDto.Date.Kind}");
-                Console.WriteLine($"🔍 Received Date UTC: {createDto.Date.ToUniversalTime()}");
-                Console.WriteLine($"🔍 Received Date Local: {createDto.Date.ToLocalTime()}");
-                Console.WriteLine($"🔍 Just Date part: {createDto.Date.Date}");
-                
-                // 🔧 FIXED: Use the exact date as UTC without compensation
-                var targetDate = new DateTime(createDto.Date.Year, createDto.Date.Month, createDto.Date.Day, 0, 0, 0, DateTimeKind.Utc);
-                Console.WriteLine($"🔍 Target Date: {targetDate}");
-                
+                // Convert received date to South Africa timezone
+                var receivedDate = DateTime.SpecifyKind(createDto.Date, DateTimeKind.Unspecified);
+                var southAfricaDate = TimeZoneInfo.ConvertTimeFromUtc(
+                    TimeZoneInfo.ConvertTimeToUtc(receivedDate, _southAfricaTimeZone),
+                    _southAfricaTimeZone);
+
+                Console.WriteLine($"Received Date: {createDto.Date}");
+                Console.WriteLine($"South Africa Date: {southAfricaDate}");
+                Console.WriteLine($"Date for storage: {southAfricaDate.Date}");
+
+                // Use South Africa date for all operations
+                var dateForStorage = southAfricaDate.Date;
+
                 // First, find or create a shift report for this date
-                // Ensure we're using the exact date without any timezone conversion issues
-                var dateOnly = DateTime.SpecifyKind(createDto.Date.Date, DateTimeKind.Unspecified);
                 var existingShiftReport = await _context.ShiftReports
-                    .FirstOrDefaultAsync(sr => sr.Date.Date == targetDate.Date && sr.LineManager == createDto.LineManager);
+                    .FirstOrDefaultAsync(sr => sr.Date.Date == dateForStorage &&
+                                               sr.LineManager == createDto.LineManager);
 
                 if (existingShiftReport == null)
                 {
-                    // Create a new shift report
+                    // Create a new shift report with South Africa date
                     existingShiftReport = new ShiftReport
                     {
-                        Date = targetDate, // 🔧 FIXED: Use the properly constructed target date
+                        Date = dateForStorage,
                         LineManager = createDto.LineManager,
                         Shift = createDto.Shift,
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        CreatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _southAfricaTimeZone),
+                        UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _southAfricaTimeZone)
                     };
                     _context.ShiftReports.Add(existingShiftReport);
                     await _context.SaveChangesAsync();
+                    Console.WriteLine($"Created new shift report for date: {dateForStorage:yyyy-MM-dd}");
+                }
+                else
+                {
+                    Console.WriteLine($"Using existing shift report for date: {dateForStorage:yyyy-MM-dd}");
                 }
 
                 // Create the bin tipping entry
@@ -69,11 +77,13 @@ namespace BinFlow.API.Controllers
                 _context.BinTippings.Add(binTipping);
                 await _context.SaveChangesAsync();
 
+                Console.WriteLine($"Successfully created bin tipping entry for {dateForStorage:yyyy-MM-dd} at {createDto.Time}");
                 return CreatedAtAction(nameof(GetBinTipping), new { id = binTipping.Id }, binTipping);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error creating bin tipping: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { error = ex.Message });
             }
         }
@@ -97,6 +107,36 @@ namespace BinFlow.API.Controllers
         public async Task<ActionResult<IEnumerable<BinTipping>>> GetBinTippings()
         {
             return await _context.BinTippings.ToListAsync();
+        }
+
+        // GET: api/bintippings/date/{date}
+        [HttpGet("date/{date}")]
+        public async Task<ActionResult<IEnumerable<BinTipping>>> GetBinTippingsByDate(DateTime date)
+        {
+            try
+            {
+                // Convert to South Africa timezone for consistent querying
+                var southAfricaDate = TimeZoneInfo.ConvertTimeFromUtc(
+                    TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(date, DateTimeKind.Unspecified), _southAfricaTimeZone),
+                    _southAfricaTimeZone).Date;
+
+                // Get shift reports for this date and then get their bin tippings
+                var shiftReports = await _context.ShiftReports
+                    .Where(sr => sr.Date.Date == southAfricaDate)
+                    .ToListAsync();
+
+                var binTippings = await _context.BinTippings
+                    .Where(bt => shiftReports.Select(sr => sr.Id).Contains(bt.ShiftReportId))
+                    .OrderBy(bt => bt.Time)
+                    .ToListAsync();
+
+                return Ok(binTippings);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting bin tippings by date: {ex.Message}");
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
     }
 

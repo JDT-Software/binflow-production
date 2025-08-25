@@ -1,10 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using BinFlow.API.Data;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Force application to use South Africa timezone
+TimeZoneInfo.ClearCachedData();
+var southAfricaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("South Africa Standard Time");
+Console.WriteLine($"Application timezone set to: {southAfricaTimeZone.DisplayName}");
+
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -25,27 +38,31 @@ string connectionString = null;
 
 if (!string.IsNullOrEmpty(pgHost) && !string.IsNullOrEmpty(pgDatabase) && !string.IsNullOrEmpty(pgUser) && !string.IsNullOrEmpty(pgPassword))
 {
-    connectionString = $"Host={pgHost};Port={pgPort ?? "5432"};Database={pgDatabase};Username={pgUser};Password={pgPassword};SSL Mode=Require;Trust Server Certificate=true";
-    Console.WriteLine("Built connection string from Railway variables");
+    // Add timezone parameter to connection string
+    connectionString = $"Host={pgHost};Port={pgPort ?? "5432"};Database={pgDatabase};Username={pgUser};Password={pgPassword};SSL Mode=Require;Trust Server Certificate=true;Timezone=Africa/Johannesburg";
+    Console.WriteLine("Built connection string from Railway variables with South Africa timezone");
 }
 else
 {
-    // Railway PostgreSQL fallback for local development
-    connectionString = "Host=gondola.proxy.rlwy.net;Port=35904;Database=railway;Username=postgres;Password=cuXAkVzsySNtqrBDkPRIXrjqLmSguJcJ;SSL Mode=Require;Trust Server Certificate=true;Timeout=60;Command Timeout=60;Pooling=true;Connection Lifetime=0";
-    Console.WriteLine("Using Railway PostgreSQL fallback connection string");
+    // Railway PostgreSQL fallback for local development with timezone
+    connectionString = "Host=gondola.proxy.rlwy.net;Port=35904;Database=railway;Username=postgres;Password=cuXAkVzsySNtqrBDkPRIXrjqLmSguJcJ;SSL Mode=Require;Trust Server Certificate=true;Timeout=60;Command Timeout=60;Pooling=true;Connection Lifetime=0;Timezone=Africa/Johannesburg";
+    Console.WriteLine("Using Railway PostgreSQL fallback connection string with South Africa timezone");
 }
 
 if (!string.IsNullOrEmpty(connectionString))
 {
     builder.Services.AddDbContext<BinFlowDbContext>(options =>
-        options.UseNpgsql(connectionString));
+        options.UseNpgsql(connectionString, o => 
+        {
+            o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        }));
 }
 else
 {
     Console.WriteLine("Warning: No database connection found. API will use mock data only.");
 }
 
-// FIXED CORS - Allow both local and deployed frontend
+// CORS - Allow both local and deployed frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", policy =>

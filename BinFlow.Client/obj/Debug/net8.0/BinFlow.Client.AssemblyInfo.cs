@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BinFlow.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2e4ac9e281a0c4b96d53d73cf7c9a59ec76cb61e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8364eb4e879bffb58885c4ddafe20bd9047c749f")]
 [assembly: System.Reflection.AssemblyProductAttribute("BinFlow.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BinFlow.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
